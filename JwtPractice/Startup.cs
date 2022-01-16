@@ -32,6 +32,7 @@ namespace JwtPractice
 
             services.AddControllers();
 
+            //Jwt icin configuration ayarlari.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -66,7 +67,7 @@ namespace JwtPractice
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthorization(); //Jwt'yi etkinlestirmek icin bu middleware'i eklememiz gerekli.
 
             app.UseEndpoints(endpoints =>
             {

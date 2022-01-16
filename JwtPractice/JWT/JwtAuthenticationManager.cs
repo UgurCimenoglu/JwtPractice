@@ -20,6 +20,7 @@ namespace JwtPractice.JWT
             Configuration = configuration;
         }
 
+        //Jwt'yi test etmek için key,value tutan bir dictionary oluşturdum.
         private readonly Dictionary<string, string> users = new Dictionary<string, string>
         {
             {"ugur","1234" },
@@ -29,12 +30,18 @@ namespace JwtPractice.JWT
 
         public string Authentication(string userName, string password)
         {
+            //Ön yüzden girilen kllanıcı adı ve şifre ile dictionary yapısındakiler kontrol ediliyor.
             if (!users.Any(u => u.Key == userName && u.Value == password))
             {
                 return null;
             }
+            //TokenHandler oluşturdum, nesne bize jwt'yi okuma ve yazmamıza olanak sağlıyor.
             var tokenHandler = new JwtSecurityTokenHandler();
+
+            //TokenKey'imizin byte array şeklineçeviriyoruz çünkü SymmetricticSecurityKey oluştururken bizden byte array istiyor.
             var tokenKey = Encoding.ASCII.GetBytes(Configuration["TokenOptions:SecurityKey"]);
+
+            //Tokenin Descriptor bölümünü oluşturuyorum.Bu kısım tokenin payload kısmı.
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new List<Claim>
@@ -48,7 +55,8 @@ namespace JwtPractice.JWT
                 Audience = Configuration["TokenOptions:Audience"],
 
             };
-            var a = Configuration["TokenOptions:AccessTokenExpiration"];
+            
+            //Token oluşturup return ediyorum.
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }

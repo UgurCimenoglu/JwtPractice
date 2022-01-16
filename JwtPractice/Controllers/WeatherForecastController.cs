@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace JwtPractice.Controllers
 {
-    [Authorize]
+    [Authorize] //Bu attribute ile bu classtaki tüm endpointlere token zorunluluğu getiriyoruz.
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -22,7 +22,7 @@ namespace JwtPractice.Controllers
         public WeatherForecastController(ILogger<WeatherForecastController> logger, IServiceProvider service)
         {
             _logger = logger;
-            jwtAuthenticationService = service.GetService<IJwtAuthenticationService>();
+            jwtAuthenticationService = service.GetService<IJwtAuthenticationService>(); //IoC'den bir nesne türetmesini söylüyorum.
         }
 
         private static readonly string[] Summaries = new[]
@@ -43,7 +43,7 @@ namespace JwtPractice.Controllers
             .ToArray();
         }
 
-        [AllowAnonymous]
+        [AllowAnonymous]  //Bu attribute ile tokensiz istekte bulunabiliyoruz.
         [HttpPost("login")]
         public IActionResult Login(string userName, string password)
         {
